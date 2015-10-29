@@ -1,4 +1,5 @@
 package src.main.java;
+
 /*
  * Author: Michael Created: 16 April 2005 12:39:10 Modified: 16 April 2005 12:39:10
  */
@@ -47,19 +48,15 @@ public class Agent {
 
     public void nextShot(InfluenceMap m1, Grid Attackgrid) {
 	m = m1;
-
 	g = Attackgrid;
 
 	if (m.getNumberOfHotspots() == 0) {
 	    NumberGenerator Powergen = new NumberGenerator();
-
-	    // while(compAtt.getGridVal(i-
 	    i = Powergen.rand(10);
 	    j = Powergen.rand(10);
 	}
 
 	// if there is only one HS get it's co-ordinates on the IM
-
 	if (m.getNumberOfHotspots() == 1) {
 	    int checki = m.getHotspotI();
 	    int checkj = m.getHotspotJ();
@@ -75,12 +72,8 @@ public class Agent {
 	    if (g.getGridVal(checki, checkj) == 0) {
 		i = checki;
 		j = checkj;
-	    }
-
-	    else // set i, j to a random that has not been hit
-	    {
+	    } else {
 		generator = new Random();
-
 		boolean empty = false;
 		// create random numbers
 		while (!empty) {
@@ -90,13 +83,10 @@ public class Agent {
 		    if (g.getGridVal(checki, checkj) == 0) {
 			empty = true;
 		    }
-
 		}
-
 		i = checki;
 		j = checkj;
 	    }
-
 	}
 
 	// code to choose hotspots
@@ -109,9 +99,7 @@ public class Agent {
 	    if (g.getGridVal(refs[0], refs[1]) == 0) {
 		i = refs[0];
 		j = refs[1];
-	    }
-
-	    else {
+	    } else {
 		int loop = 0;
 		while (g.isValidPlaceForAShip(i, j) && !noneFound) {
 		    if (loop == 100)
@@ -119,22 +107,17 @@ public class Agent {
 		    for (int q = 2; q < refs.length - 1; q++) {
 			i = refs[q];
 			j = refs[q + 1];
-
 		    }
 		    loop++;
 		}
-
 	    }
-
 	    int length = refs.length - 2;
 
 	    for (int z = 0; z < length; z++) {
 		refs[z] = refs[z + 2];
 		// refs[z+1] = z+2;
 	    }
-
 	}
-
     }
 
     public Grid placeShips() {
@@ -183,7 +166,6 @@ public class Agent {
 	    g.addDest(x, y, o);
 
 	}
-
 	System.out.println("agent grid");
 	System.out.println(g.toString());
 
