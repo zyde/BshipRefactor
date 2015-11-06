@@ -25,6 +25,7 @@ public class NumberGeneratorTest {
 	int low = 1;
 	assertTrue("Error, random is too high", high >= random);
 	assertTrue("Error, random is too low",  low  <= random);
+	
     }
 
 }
