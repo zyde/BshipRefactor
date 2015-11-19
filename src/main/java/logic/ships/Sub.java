@@ -1,4 +1,4 @@
-package src.main.java.ships;
+package src.main.java.logic.ships;
 
 /*
  * Author: Michael
@@ -7,10 +7,10 @@ package src.main.java.ships;
  */
 import java.io.Serializable;
 
-import src.main.java.Grid;
 import src.main.java.exceptions.InitialPositionOccupiedException;
 import src.main.java.exceptions.PositionExceedsBoardException;
 import src.main.java.exceptions.PositionOccupiedException;
+import src.main.java.logic.Grid;
 
 /**
  * Fills 3 sequencial elements in the two dimensional array in either the same

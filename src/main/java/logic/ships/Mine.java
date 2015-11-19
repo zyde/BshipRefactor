@@ -1,26 +1,26 @@
-package src.main.java.ships;
+package src.main.java.logic.ships;
 
 /*
  * Author: Michael
- * Created: 07 December 2004 23:01:02
- * Modified: 07 December 2004 23:01:02
+ * Created: 05 December 2004 18:57:44
+ * Modified: 05 December 2004 18:57:44
  */
 
 import java.io.Serializable;
 
-import src.main.java.Grid;
 import src.main.java.exceptions.InitialPositionOccupiedException;
 import src.main.java.exceptions.PositionExceedsBoardException;
 import src.main.java.exceptions.PositionOccupiedException;
+import src.main.java.logic.Grid;
 
-public class Battle extends Ship implements Serializable {
-
-    private int segments = 4;
+public class Mine extends Ship implements Serializable {
+    public Grid board = null;
+    private int segments = 2;
 
     /**
-     * Fills 4 sequencial elements in the two dimensional array in either the
-     * same row or column with the a value. The value entered represents a
-     * Battleship on the grid. The elements will either be filled in row from
+     * Fills 2 sequencial elements in the two dimensional array in either the
+     * same row or column with the a value. The value entered represents an
+     * Minesweeper on the grid. The elements will either be filled in row from
      * left to right or a column from top to bottom
      * 
      * @param i
@@ -29,107 +29,107 @@ public class Battle extends Ship implements Serializable {
      *            the column postition to start placing the values from left to
      *            right
      * @param s
-     *            if this is an 0 a horizonal ship will be entered in the grid,
-     *            if this parameter equals a 1 a vertical ship will be entered
-     *            in the grid
+     *            if this is 0 (zero) a horizonal ship will be entered in the
+     *            grid, if this parameter equals 1 a vertical ship will be
+     *            entered in the grid
      * @throws InitialPositionOccupiedException
      *             if the inital poition is already occupied with a ship
      * @throws PositionExceedsBoardException
      *             if the ship cannot fit onto the board
      * @throws PositionOccupiedException
-     *             if any of the 4 elements about to be filled are already
+     *             if any of the 2 elements about to be filled are already
      *             filled
+     * @throws IllegalArgumentException
+     *             if the last parameter does not equal 1 or 0
      */
-    public Battle(Grid board, int i, int j, int s) {
-
+    public Mine(Grid board, int i, int j, int s) {
+	// Grid board;
 	int userColumn = board.getWidth();
 	int userRow = board.getLength();
 
-	boolean battlePlaced = board.checkBattlePlaced();
+	boolean minePlaced = board.checkMinePlaced();
+
+	if (minePlaced == true)
+	    System.out.println("Minesweeper already placed\n");
 
 	if (s < 0 || s > 1)
 	    throw new IllegalArgumentException();
 
-	if (battlePlaced == false && s == 0)
+	if (minePlaced == false && s == 0)
 	    try {
 		if (board.getGridVal(i, j) != 0)
 		    throw new InitialPositionOccupiedException();
-		if (j + 4 > userColumn)
+		if (j + 2 > userColumn)
 		    throw new PositionExceedsBoardException();
 
-		for (int c = j; c < j + 4; c++)
+		for (int c = j; c < j + 2; c++)
 		    while (board.getGridVal(i, c) != 0) {
 			throw new PositionOccupiedException();
-
 		    }
 
-		for (int c = j; c < j + 4; c++)
+		for (int c = j; c < j + 2; c++)
 		    if (board.getGridVal(i, c) == 0) {
-			board.update(i, c, 4);
-			board.setBattlePlacedTrue();
+			board.set(i, c, 2);
+
+			board.setMinePlacedTrue();
 		    }
 
 	    }
 
 	    catch (PositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place horizontal battleship here, position is occupied \n");
+			.println("Cannot place Minesweeper horizontally here, position is occupied \n");
 	    }
 
 	    catch (PositionExceedsBoardException Exception) {
 		System.out
-			.println("Cannot place horizontal battleship here, ship will not fit on grid \n");
+			.println("Cannot place Minesweeper horizontally here, ship will not fit on grid \n");
 	    }
 
 	    catch (InitialPositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place horizontal battleship here, Initial point is already occupied \n");
+			.println("Horizontal Minesweeper cannot go here Initial point is already occupied \n");
 	    }
 
-	else if (battlePlaced == false && s == 1)
+	else if (minePlaced == false && s == 1) {
 
 	    try {
 
 		if (board.getGridVal(i, j) != 0)
 		    throw new PositionOccupiedException();
-		if (i + 4 > userRow)
+		if (i + 2 > userRow)
 		    throw new PositionExceedsBoardException();
 
-		for (int r = i; r < i + 4; r++)
+		for (int r = i; r < i + 2; r++)
 		    while (board.getGridVal(r, j) != 0) {
 			throw new PositionOccupiedException();
 		    }
 
-		for (int r = i; r < i + 4; r++)
+		for (int r = i; r < i + 2; r++)
 		    if (board.getGridVal(r, j) == 0) {
-			board.update(r, j, 4);
-			board.setBattlePlacedTrue();
-		    }
+			board.set(r, j, 2);
 
+			board.setMinePlacedTrue();
+		    }
 	    }
 
 	    catch (PositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place vertical battleship here, position is occupied \n");
+			.println("Cannot place vertical Minesweeper here, position is occupied \n");
 	    }
 
 	    catch (PositionExceedsBoardException Exception) {
 		System.out
-			.println("Cannot place vertical battleship here, ship will not fit on grid \n");
+			.println("Cannot place vertical Minesweeper here, ship will not fit on grid \n");
 	    }
 
 	    catch (InitialPositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place vertical battleship here, Initial point is already occupied \n");
+			.println("Cannot place vertical Minesweeper here, Initial point is already occupied \n");
 	    }
-
+	}
     }
 
-    /**
-     * Checks if the ship is sunk.
-     * 
-     * @returns a boolean true if it is sunk and false if it is not sunk
-     */
     public boolean isSunk() {
 	if (segments == 0) {
 	    return true;
@@ -144,8 +144,9 @@ public class Battle extends Ship implements Serializable {
     public void scoreHit() {
 	segments = segments - 1;
 
-	if (segments < 0)
+	if (segments < 0) {
 	    throw new IllegalArgumentException("Segments var is less than 0");
+	}
     }
 
 }

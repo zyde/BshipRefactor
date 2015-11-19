@@ -1,10 +1,13 @@
-package src.main.java;
+package src.main.java.runner;
 
 import javax.swing.JTextField;
 
 import src.main.java.graphics.AttackPanel;
+import src.main.java.graphics.GUI;
 import src.main.java.graphics.HomePanel;
 import src.main.java.graphics.InfluencePanel;
+import src.main.java.logic.Agent;
+import src.main.java.logic.GameState;
 
 public class BattleShipsEngine {
     public AttackPanel attackPanel;

@@ -1,4 +1,4 @@
-package src.main.java;
+package src.main.java.logic;
 
 /*
  * Author: Michael Okarimia
@@ -14,11 +14,11 @@ package src.main.java;
 
 import java.io.Serializable;
 
-import src.main.java.ships.Air;
-import src.main.java.ships.Battle;
-import src.main.java.ships.Dest;
-import src.main.java.ships.Mine;
-import src.main.java.ships.Sub;
+import src.main.java.logic.ships.Air;
+import src.main.java.logic.ships.Battle;
+import src.main.java.logic.ships.Dest;
+import src.main.java.logic.ships.Mine;
+import src.main.java.logic.ships.Sub;
 
 public class Grid implements Serializable {
     // two dimensional array to hold the board data

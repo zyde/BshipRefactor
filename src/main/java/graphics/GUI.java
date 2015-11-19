@@ -1,4 +1,4 @@
-package src.main.java;
+package src.main.java.graphics;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -12,27 +12,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import src.main.java.graphics.AircraftCarrier;
-import src.main.java.graphics.AircraftCarrierH;
-import src.main.java.graphics.AttackPanel;
-import src.main.java.graphics.Battleship;
-import src.main.java.graphics.BattleshipH;
-import src.main.java.graphics.Destroyer;
-import src.main.java.graphics.DestroyerH;
-import src.main.java.graphics.HitIcon;
-import src.main.java.graphics.HomePanel;
-import src.main.java.graphics.IMap;
-import src.main.java.graphics.InfluencePanel;
-import src.main.java.graphics.Minesweeper;
-import src.main.java.graphics.MinesweeperH;
-import src.main.java.graphics.MissIcon;
-import src.main.java.graphics.Submarine;
-import src.main.java.graphics.SubmarineH;
-import src.main.java.graphics.Sunk;
+import src.main.java.logic.GameState;
+import src.main.java.logic.Grid;
+import src.main.java.runner.BattleShipsEngine;
 
-class GUI extends JFrame {
+public class GUI extends JFrame {
 
-    BattleShipsEngine data = new BattleShipsEngine();
+    public BattleShipsEngine data = new BattleShipsEngine();
 
     public GUI(GameState paramGameState) {
 	super("Battleships");

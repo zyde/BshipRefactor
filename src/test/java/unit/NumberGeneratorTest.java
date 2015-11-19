@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import src.main.java.NumberGenerator;
+import src.main.java.logic.NumberGenerator;
 
 public class NumberGeneratorTest {
     

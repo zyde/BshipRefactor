@@ -1,25 +1,26 @@
-package src.main.java.ships;
+package src.main.java.logic.ships;
 
 /*
  * Author: Michael
- * Created: 07 December 2004 16:50:18
- * Modified: 07 December 2004 16:50:18
+ * Created: 07 December 2004 23:01:02
+ * Modified: 07 December 2004 23:01:02
  */
 
 import java.io.Serializable;
 
-import src.main.java.Grid;
 import src.main.java.exceptions.InitialPositionOccupiedException;
 import src.main.java.exceptions.PositionExceedsBoardException;
 import src.main.java.exceptions.PositionOccupiedException;
+import src.main.java.logic.Grid;
 
-public class Dest extends Ship implements Serializable {
-    private int segments = 3;
+public class Battle extends Ship implements Serializable {
+
+    private int segments = 4;
 
     /**
-     * Fills 3 sequencial elements in the two dimensional array in either the
+     * Fills 4 sequencial elements in the two dimensional array in either the
      * same row or column with the a value. The value entered represents a
-     * Destroyer on the grid. The elements will either be filled in row from
+     * Battleship on the grid. The elements will either be filled in row from
      * left to right or a column from top to bottom
      * 
      * @param i
@@ -36,91 +37,105 @@ public class Dest extends Ship implements Serializable {
      * @throws PositionExceedsBoardException
      *             if the ship cannot fit onto the board
      * @throws PositionOccupiedException
-     *             if any of the 3 elements about to be filled are already
+     *             if any of the 4 elements about to be filled are already
      *             filled
      */
-    public Dest(Grid board, int i, int j, int s) {
+    public Battle(Grid board, int i, int j, int s) {
 
 	int userColumn = board.getWidth();
 	int userRow = board.getLength();
 
-	boolean destPlaced = board.checkDestPlaced();
+	boolean battlePlaced = board.checkBattlePlaced();
 
 	if (s < 0 || s > 1)
 	    throw new IllegalArgumentException();
 
-	if (destPlaced == true)
-	    System.out.println("Submarine already placed\n");
-
-	if (destPlaced == false && s == 0)
-
+	if (battlePlaced == false && s == 0)
 	    try {
 		if (board.getGridVal(i, j) != 0)
 		    throw new InitialPositionOccupiedException();
-		if (j + 3 > userColumn)
+		if (j + 4 > userColumn)
 		    throw new PositionExceedsBoardException();
 
-		for (int c = j; c < j + 3; c++)
+		for (int c = j; c < j + 4; c++)
 		    while (board.getGridVal(i, c) != 0) {
 			throw new PositionOccupiedException();
+
 		    }
 
-		for (int c = j; c < j + 3; c++)
+		for (int c = j; c < j + 4; c++)
 		    if (board.getGridVal(i, c) == 0) {
-			board.update(i, c, 7);
-			board.setDestPlacedTrue();
+			board.update(i, c, 4);
+			board.setBattlePlacedTrue();
 		    }
+
 	    }
 
 	    catch (PositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place horizontal destroyer here, position is occupied \n");
+			.println("Cannot place horizontal battleship here, position is occupied \n");
 	    }
 
 	    catch (PositionExceedsBoardException Exception) {
 		System.out
-			.println("Cannot place horizontal destroyer here, ship will not fit on grid \n");
+			.println("Cannot place horizontal battleship here, ship will not fit on grid \n");
 	    }
 
 	    catch (InitialPositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place horizontal destroyer here, initial point is already occupied \n");
+			.println("Cannot place horizontal battleship here, Initial point is already occupied \n");
 	    }
 
-	else if (destPlaced == false && s == 1)
+	else if (battlePlaced == false && s == 1)
+
 	    try {
 
 		if (board.getGridVal(i, j) != 0)
 		    throw new PositionOccupiedException();
-		if (i + 3 > userRow)
+		if (i + 4 > userRow)
 		    throw new PositionExceedsBoardException();
 
-		for (int r = i; r < i + 3; r++)
+		for (int r = i; r < i + 4; r++)
 		    while (board.getGridVal(r, j) != 0) {
 			throw new PositionOccupiedException();
 		    }
 
-		for (int r = i; r < i + 3; r++)
+		for (int r = i; r < i + 4; r++)
 		    if (board.getGridVal(r, j) == 0) {
-			board.update(r, j, 7);
-			board.setDestPlacedTrue();
+			board.update(r, j, 4);
+			board.setBattlePlacedTrue();
 		    }
+
 	    }
 
 	    catch (PositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place vertical destroyer here, position is occupied \n");
+			.println("Cannot place vertical battleship here, position is occupied \n");
 	    }
 
 	    catch (PositionExceedsBoardException Exception) {
 		System.out
-			.println("Cannot place vertical destroyer here, ship will not fit on grid \n");
+			.println("Cannot place vertical battleship here, ship will not fit on grid \n");
 	    }
 
 	    catch (InitialPositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place vertical destroyer here, initial point is already occupied \n");
+			.println("Cannot place vertical battleship here, Initial point is already occupied \n");
 	    }
+
+    }
+
+    /**
+     * Checks if the ship is sunk.
+     * 
+     * @returns a boolean true if it is sunk and false if it is not sunk
+     */
+    public boolean isSunk() {
+	if (segments == 0) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**
@@ -131,15 +146,6 @@ public class Dest extends Ship implements Serializable {
 
 	if (segments < 0)
 	    throw new IllegalArgumentException("Segments var is less than 0");
-
-    }
-
-    public boolean isSunk() {
-	if (segments == 0) {
-	    return true;
-	} else {
-	    return false;
-	}
     }
 
 }

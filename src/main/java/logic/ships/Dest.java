@@ -1,27 +1,26 @@
-package src.main.java.ships;
+package src.main.java.logic.ships;
 
 /*
  * Author: Michael
- * Created: 08 December 2004 09:37:10
- * Modified: 08 December 2004 09:37:10
+ * Created: 07 December 2004 16:50:18
+ * Modified: 07 December 2004 16:50:18
  */
 
 import java.io.Serializable;
 
-import src.main.java.Grid;
 import src.main.java.exceptions.InitialPositionOccupiedException;
 import src.main.java.exceptions.PositionExceedsBoardException;
 import src.main.java.exceptions.PositionOccupiedException;
+import src.main.java.logic.Grid;
 
-public class Air extends Ship implements Serializable {
-
-    private int remainingIntactCells = 5;
+public class Dest extends Ship implements Serializable {
+    private int segments = 3;
 
     /**
-     * Fills 5 sequencial elements in the two dimensional array in either the
-     * same row or column with the a value. The value entered represents an
-     * Aircraft Carrier on the grid. The elements will either be filled in row
-     * from left to right or a column from top to bottom
+     * Fills 3 sequencial elements in the two dimensional array in either the
+     * same row or column with the a value. The value entered represents a
+     * Destroyer on the grid. The elements will either be filled in row from
+     * left to right or a column from top to bottom
      * 
      * @param i
      *            the row index to postion the values
@@ -37,104 +36,110 @@ public class Air extends Ship implements Serializable {
      * @throws PositionExceedsBoardException
      *             if the ship cannot fit onto the board
      * @throws PositionOccupiedException
-     *             if any of the 5 elements about to be filled are already
+     *             if any of the 3 elements about to be filled are already
      *             filled
      */
-    public Air(Grid board, int i, int j, int s) {
+    public Dest(Grid board, int i, int j, int s) {
 
 	int userColumn = board.getWidth();
 	int userRow = board.getLength();
 
-	boolean airPlaced = board.checkAirPlaced();
+	boolean destPlaced = board.checkDestPlaced();
 
 	if (s < 0 || s > 1)
 	    throw new IllegalArgumentException();
 
-	if (airPlaced == false && s == 0)
+	if (destPlaced == true)
+	    System.out.println("Submarine already placed\n");
+
+	if (destPlaced == false && s == 0)
+
 	    try {
 		if (board.getGridVal(i, j) != 0)
 		    throw new InitialPositionOccupiedException();
-		if (j + 5 > userColumn)
+		if (j + 3 > userColumn)
 		    throw new PositionExceedsBoardException();
 
-		for (int c = j; c < j + 5; c++)
+		for (int c = j; c < j + 3; c++)
 		    while (board.getGridVal(i, c) != 0) {
 			throw new PositionOccupiedException();
 		    }
 
-		for (int c = j; c < j + 5; c++)
+		for (int c = j; c < j + 3; c++)
 		    if (board.getGridVal(i, c) == 0) {
-			board.update(i, c, 5);
-			board.setAirPlacedTrue();
+			board.update(i, c, 7);
+			board.setDestPlacedTrue();
 		    }
 	    }
 
 	    catch (PositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place horizontal Aircraft Carrier here, position is occupied \n");
+			.println("Cannot place horizontal destroyer here, position is occupied \n");
 	    }
 
 	    catch (PositionExceedsBoardException Exception) {
 		System.out
-			.println("Cannot place horizontal Aircraft Carrier here, ship will not fit on grid \n");
+			.println("Cannot place horizontal destroyer here, ship will not fit on grid \n");
 	    }
 
 	    catch (InitialPositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place horizontal Aircraft Carrier here, initial point is already occupied \n");
+			.println("Cannot place horizontal destroyer here, initial point is already occupied \n");
 	    }
 
-	else if (airPlaced == false && s == 1) {
-
+	else if (destPlaced == false && s == 1)
 	    try {
 
 		if (board.getGridVal(i, j) != 0)
 		    throw new PositionOccupiedException();
-		if (i + 5 > userRow)
+		if (i + 3 > userRow)
 		    throw new PositionExceedsBoardException();
 
-		for (int r = i; r < i + 5; r++)
+		for (int r = i; r < i + 3; r++)
 		    while (board.getGridVal(r, j) != 0) {
 			throw new PositionOccupiedException();
 		    }
 
-		for (int r = i; r < i + 5; r++)
+		for (int r = i; r < i + 3; r++)
 		    if (board.getGridVal(r, j) == 0) {
-			board.update(r, j, 5);
-			board.setAirPlacedTrue();
+			board.update(r, j, 7);
+			board.setDestPlacedTrue();
 		    }
-
 	    }
 
 	    catch (PositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place vertical Aircraft Carrier here, position is occupied \n");
+			.println("Cannot place vertical destroyer here, position is occupied \n");
 	    }
 
 	    catch (PositionExceedsBoardException Exception) {
 		System.out
-			.println("Cannot place vertical Aircraft Carrier  here, ship will not fit on grid \n");
+			.println("Cannot place vertical destroyer here, ship will not fit on grid \n");
 	    }
 
 	    catch (InitialPositionOccupiedException Exception) {
 		System.out
-			.println("Cannot place vertical Aircraft Carrier here, initial point is already occupied \n");
+			.println("Cannot place vertical destroyer here, initial point is already occupied \n");
 	    }
-	}
-    }
-
-    public boolean isSunk() {
-	return (remainingIntactCells == 0);
     }
 
     /**
      * Reduces the number of undamaged segments of the ship by one when called.
      */
     public void scoreHit() {
-	remainingIntactCells = remainingIntactCells - 1;
+	segments = segments - 1;
 
-	if (remainingIntactCells < 0)
+	if (segments < 0)
 	    throw new IllegalArgumentException("Segments var is less than 0");
+
+    }
+
+    public boolean isSunk() {
+	if (segments == 0) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
 }

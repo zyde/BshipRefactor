@@ -1,4 +1,4 @@
-package src.main.java;
+package src.main.java.logic;
 
 /*
  * Author: Michael Created: 16 April 2005 12:39:10 Modified: 16 April 2005 12:39:10

@@ -1,4 +1,4 @@
-package src.main.java.ships;
+package src.main.java.logic.ships;
 
 /*
  * Author: Michael
@@ -8,7 +8,7 @@ package src.main.java.ships;
 
 import java.io.Serializable;
 
-import src.main.java.Grid;
+import src.main.java.logic.Grid;
 
 public abstract class Ship implements Serializable {
     public Grid board = null;
