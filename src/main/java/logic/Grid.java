@@ -21,24 +21,8 @@ import src.main.java.logic.ships.Mine;
 import src.main.java.logic.ships.Sub;
 
 public class Grid implements Serializable {
-    // two dimensional array to hold the board data
-    private int[][] board;
 
-    private int numberOfRows;
-    private int numberOfColumns;
-
-    private boolean minePlaced = false;
-    private boolean subPlaced = false;
-    private boolean destPlaced = false;
-    private boolean battlePlaced = false;
-    private boolean airPlaced = false;
-    private boolean allShipsSunk = false;
-
-    private Mine minesweeper;
-    private Sub submarine;
-    private Dest destroyer;
-    private Battle battleship;
-    private Air aircraftCarrier;
+    private GridData data = new GridData();
 
 
     public Grid(int widthOfGrid, int heigthOfGrid) {
@@ -56,9 +40,9 @@ public class Grid implements Serializable {
     private void initialize(int widthOfGrid, int heigthOfGrid) {
 	createBoard();
 
-	for (int a = 0; widthOfGrid < numberOfRows; widthOfGrid++)
-	    for (int b = 0; heigthOfGrid < numberOfColumns; heigthOfGrid++)
-		board[a][b] = 0;
+	for (int a = 0; widthOfGrid < data.getNumberOfRows(); widthOfGrid++)
+	    for (int b = 0; heigthOfGrid < data.getNumberOfColumns(); heigthOfGrid++)
+		data.getGameDataBoard()[a][b] = 0;
     }
 
 
@@ -66,126 +50,98 @@ public class Grid implements Serializable {
 
 
     private void createBoard() {
-	board = new int[numberOfRows][numberOfColumns];
+	data.setGameDataBoard(new int[data.getNumberOfRows()][data.getNumberOfColumns()]);
     }
     
 
     
-    
+   
+    public boolean isSpotReserved(int columnIndex, int rowIndex) {
+	int index = getGridVal(columnIndex, rowIndex);
 
-    /**
-     * Checks the grid references and returns a boolean value if there is a ship
-     * on that spot
-     * 
-     * @param columnIndex
-     *            the column of the grid reference
-     * @param rowIndex
-     *            the row of the grid reference
-     * @return a boolean value, true if the grid contains a ship and false if it
-     *         contains either a miss or empty
-     */
-    public boolean isSpotVacant(int columnIndex, int rowIndex) {
-	int index = this.getGridVal(columnIndex, rowIndex);
-
-	if (index > 1 && index < 8) {
+	if (hasInsertedValue(index)) {
 	    return true;
 	}
 	return false;
     }
 
-    /**
-     * Checks if all ships are sunk
-     */
-    public boolean allShipsSunk() {
-	if ((minesweeper.isSunk() && submarine.isSunk() && destroyer.isSunk()
-		&& battleship.isSunk() && aircraftCarrier.isSunk()))
-	    allShipsSunk = true;
 
-	return allShipsSunk;
+
+
+
+    private boolean hasInsertedValue(int index) {
+	return index > 1 && index < 8;
     }
 
-    public boolean isMineShipSunk() {
-	return minesweeper.isSunk();
+    
+    public boolean areShipsSunk() {
+	return isMineShipSunk() && isSubmarineSunk()
+		&& isDestroyerSunk() && isBattleShipSunk();
     }
 
-    public boolean isSubmarineSunk() {
-	return submarine.isSunk();
-    }
-
-    public boolean isDestroyerSunk() {
-	return destroyer.isSunk();
-    }
-
-    public boolean isBattleShipSunk() {
-	return battleship.isSunk();
-    }
-
-    public boolean isAircraftcarrierSunk() {
-	return aircraftCarrier.isSunk();
-    }
 
     public boolean isMineShipPlaced() {
-	return minePlaced;
+	return data.isMinePlaced();
     }
 
     public void setMineshipPlaced() {
-	minePlaced = true;
+	data.setMinePlaced(true);
     }
 
     public boolean addMineship(int i, int j, int s) {
-	minesweeper = new Mine(this, i, j, s);
+	data.setMinesweeper(new Mine(this, i, j, s));
 	return isMineShipPlaced();
     }
 
     public boolean isSubmarinePlaced() {
-	return subPlaced;
+	return data.isSubPlaced();
     }
 
     public void setSubmarinePlaced() {
-	subPlaced = true;
+	data.setSubPlaced(true);
     }
 
     public boolean addSub(int i, int j, int s) {
-	submarine = new Sub(this, i, j, s);
+	data.setSubmarine(new Sub(this, i, j, s));
 	return isSubmarinePlaced();
     }
 
     public boolean isDestroyerPlaced() {
-	return destPlaced;
+	return data.isDestPlaced();
     }
 
     public void setDestroyerPlaced() {
-	destPlaced = true;
+	data.setDestPlaced(true);
     }
 
     public boolean addDestroyer(int i, int j, int s) {
-	destroyer = new Dest(this, i, j, s);
+	data.setDestroyer(new Dest(this, i, j, s));
 	return isDestroyerPlaced();
     }
 
     public boolean isBattleShipPlaced() {
-	return battlePlaced;
+	return data.isBattlePlaced();
     }
 
     public void setBattleshipPlaced() {
-	battlePlaced = true;
+	data.setBattlePlaced(true);
     }
 
     public boolean addBattleship(int i, int j, int s) {
-	battleship = new Battle(this, i, j, s);
+	data.setBattleship(new Battle(this, i, j, s));
 	return isBattleShipPlaced();
     }
 
     public boolean checkAirPlaced() {
-	return airPlaced;
+	return data.isAirPlaced();
     }
 
     public void setAirPlaced() {
-	airPlaced = true;
+	data.setAirPlaced(true);
     }
     
     public boolean isAirPlaced() {
-	return airPlaced;
+	return data.isAirPlaced();
     }
 
     public boolean allShipsPlaced() {
@@ -199,73 +155,118 @@ public class Grid implements Serializable {
     }
 
     public boolean addAir(int i, int j, int s) {
-	aircraftCarrier = new Air(this, i, j, s);
+	data.setAircraftCarrier(new Air(this, i, j, s));
 	return checkAirPlaced();
     }
 
-    /**
-     * This method is used by the ship classes to add the ships to the grid.
-     * Sets the value of a grid location to a specified integer. The grid
-     * location must be set to (zero) 0.
-     * 
-     * @param i
-     *            the row index
-     * @param j
-     *            the column index
-     * @param value
-     *            the value of the square
-     */
-    public void set(int i, int j, int value) {
-	if (i > numberOfRows || j > numberOfColumns)
-	    throw new IllegalArgumentException(
-		    "Number is bigger that the grid size");
-	if (i < 0 || j < 0 || value < 0)
-	    throw new IllegalArgumentException("Number cannot be negative");
-	if (board[i][j] != 0)
+
+    public void setShip(int rowIndex, int columnIndex, int newSpotValue) {
+	validateNumberForGrid(rowIndex, columnIndex);
+	validateNumberNegative(rowIndex, columnIndex, newSpotValue);
+	validateOccupied(rowIndex, columnIndex);
+	validateZero(newSpotValue);
+	insertSpotValue(rowIndex, columnIndex, newSpotValue);
+    }
+
+
+
+
+
+    private void validateZero(int newSpotValue) {
+	if (isZero(newSpotValue))
+	    throw new IllegalArgumentException("Number cannot = 0");
+    }
+
+
+
+
+
+    private void validateOccupied(int rowIndex, int columnIndex) {
+	if (isPositionOccupied(rowIndex, columnIndex))
 	    throw new IllegalArgumentException("Initial Position occupied");
-	if (value == 0)
-	    throw new IllegalArgumentException("Number cannot = 0");
-	board[i][j] = value;
     }
 
-    /**
-     * This method is used by the shot() method to update the grid. Sets the
-     * value of a grid location to a specified integer. The grid location must
-     * be set to (zero) 0.
-     * 
-     * @param i
-     *            the row index
-     * @param j
-     *            the column index
-     * @param value
-     *            the value of the square
-     */
-    public void update(int i, int j, int value) {
-	if (i > numberOfRows || j > numberOfColumns)
-	    throw new IllegalArgumentException(
-		    "Number is bigger that the grid size");
-	if (i < 0 || j < 0)
+
+
+
+
+    private void validateNumberNegative(int rowIndex, int columnIndex,
+	    int newSpotValue) {
+	if (isNumberNegative(rowIndex, columnIndex, newSpotValue))
 	    throw new IllegalArgumentException("Number cannot be negative");
-	if (value == 0)
-	    throw new IllegalArgumentException("Number cannot = 0");
-	board[i][j] = value;
     }
 
-    /**
-     * Returns the value of the given grid index
-     * 
-     * @param i
-     *            the row index
-     * @param j
-     *            the column index
-     */
-    public int getGridVal(int i, int j) {
-	if (i < 0 || j < 0)
+    private void validateNumberNegative(int rowIndex, int columnIndex) {
+	if (isNumberNegative(rowIndex, columnIndex))
 	    throw new IllegalArgumentException("Number cannot be negative");
-	if (i > numberOfRows || j > numberOfColumns)
-	    throw new IllegalArgumentException(
-		    "Number is bigger that the grid size");
-	return board[i][j];
+    }
+
+
+
+    private void validateNumberForGrid(int rowIndex, int columnIndex) {
+	if (isNumberBiggerThanGridSize(rowIndex, columnIndex))
+	    throw new IllegalArgumentException("Number is bigger that the grid size");
+    }
+
+
+
+
+
+    private void insertSpotValue(int rowIndex, int columnIndex,
+	    int newSpotValue) {
+	data.getGameDataBoard()[rowIndex][columnIndex] = newSpotValue;
+    }
+
+
+
+
+
+    private boolean isZero(int newSpotValue) {
+	return newSpotValue == 0;
+    }
+
+
+
+
+
+    private boolean isPositionOccupied(int rowIndex, int columnIndex) {
+	return data.getGameDataBoard()[rowIndex][columnIndex] != 0;
+    }
+
+
+
+
+
+    private boolean isNumberNegative(int rowIndex, int columnIndex,
+	    int newSpotValue) {
+	return rowIndex < 0 || columnIndex < 0 || newSpotValue < 0;
+    }
+    
+    private boolean isNumberNegative(int rowIndex, int columnIndex) {
+	return rowIndex < 0 || columnIndex < 0;
+    }
+
+
+
+
+
+    private boolean isNumberBiggerThanGridSize(int rowIndex, int columnIndex) {
+	return rowIndex > data.getNumberOfRows() || columnIndex > data.getNumberOfColumns();
+    }
+
+    public void update(int rowIndex, int columnIndex, int newSpotValue) {
+	validateNumberForGrid(rowIndex, columnIndex);
+	validateNumberNegative(rowIndex, columnIndex);
+	validateZero(newSpotValue);
+	insertSpotValue(rowIndex, columnIndex, newSpotValue);
+    }
+
+    
+    public int getGridVal(int rowIndex, int columnIndex) {
+	if (isNumberNegative(rowIndex, columnIndex))
+	    throw new IllegalArgumentException("Number cannot be negative");
+	validateNumberForGrid(rowIndex, columnIndex);
+	return data.getGameDataBoard()[rowIndex][columnIndex];
     }
 
     /**
@@ -291,13 +292,13 @@ public class Grid implements Serializable {
 	    break;
 
 	case 2:
-	    minesweeper.scoreHit();
+	    data.getMinesweeper().scoreHit();
 
-	    if (minesweeper.isSunk() == true)
+	    if (data.getMinesweeper().isSunk() == true)
 		output = ("Shot at " + i + "," + j + " HIT & SUNK Minesweeper"
 			+ " value of square is " + sqr);
 
-	    else if (minesweeper.isSunk() == false)
+	    else if (data.getMinesweeper().isSunk() == false)
 		output = ("Shot at " + i + "," + j + " HIT "
 			+ " value of square is " + sqr);
 	    this.update(i, j, (sqr - 8));
@@ -305,14 +306,14 @@ public class Grid implements Serializable {
 	    break;
 
 	case 3:
-	    submarine.isSunk();
-	    submarine.scoreHit();
+	    data.getSubmarine().isSunk();
+	    data.getSubmarine().scoreHit();
 
-	    if (submarine.isSunk() == true)
+	    if (data.getSubmarine().isSunk() == true)
 		output = ("Shot at " + i + "," + j + " HIT & SUNK Submarine"
 			+ " value of square is " + sqr);
 
-	    else if (submarine.isSunk() == false)
+	    else if (data.getSubmarine().isSunk() == false)
 		output = ("Shot at " + i + "," + j + " HIT "
 			+ " value of square is " + sqr);
 	    this.update(i, j, (sqr - 8));
@@ -320,13 +321,13 @@ public class Grid implements Serializable {
 	    break;
 
 	case 4:
-	    battleship.scoreHit();
+	    data.getBattleship().scoreHit();
 
-	    if (battleship.isSunk() == true)
+	    if (data.getBattleship().isSunk() == true)
 		output = ("Shot at " + i + "," + j + " HIT & SUNK Battleship"
 			+ " value of square is " + sqr);
 
-	    else if (battleship.isSunk() == false)
+	    else if (data.getBattleship().isSunk() == false)
 		output = ("Shot at " + i + "," + j + " HIT "
 			+ " value of square is " + sqr);
 	    this.update(i, j, (sqr - 8));
@@ -334,14 +335,14 @@ public class Grid implements Serializable {
 	    break;
 
 	case 5:
-	    aircraftCarrier.scoreHit();
+	    data.getAircraftCarrier().scoreHit();
 
-	    if (aircraftCarrier.isSunk() == true)
+	    if (data.getAircraftCarrier().isSunk() == true)
 		output = ("Shot at " + i + "," + j
 			+ " HIT & SUNK Aircraft Carrier"
 			+ " value of square is " + sqr);
 
-	    else if (aircraftCarrier.isSunk() == false)
+	    else if (data.getAircraftCarrier().isSunk() == false)
 		output = ("Shot at " + i + "," + j + " HIT "
 			+ " value of square is " + sqr);
 	    this.update(i, j, (sqr - 8));
@@ -349,13 +350,13 @@ public class Grid implements Serializable {
 	    break;
 
 	case 7:
-	    destroyer.scoreHit();
+	    data.getDestroyer().scoreHit();
 
-	    if (destroyer.isSunk() == true)
+	    if (data.getDestroyer().isSunk() == true)
 		output = ("Shot at " + i + "," + j + " HIT & SUNK destroyer"
 			+ " value of square is " + sqr);
 
-	    else if (destroyer.isSunk() == false)
+	    else if (data.getDestroyer().isSunk() == false)
 		output = ("Shot at " + i + "," + j + " HIT "
 			+ " value of square is " + sqr);
 	    this.update(i, j, (sqr - 8));
@@ -389,11 +390,11 @@ public class Grid implements Serializable {
 	String r = "";
 
 	// change these to ROWS to use the default
-	for (int i = 0; i < numberOfRows; i++) {
+	for (int i = 0; i < data.getNumberOfRows(); i++) {
 	    r = r + "|";
-	    for (int j = 0; j < numberOfColumns; j++)
+	    for (int j = 0; j < data.getNumberOfColumns(); j++)
 		// change this to CoLumns for default
-		r = r + board[i][j];
+		r = r + data.getGameDataBoard()[i][j];
 	    r = r + "|\n";
 	}
 	return r;
@@ -410,19 +411,19 @@ public class Grid implements Serializable {
 	String BATTLESHIP = ("Battleship is intact");
 	String AIRCRAFTCARRIER = ("Aircraft Carrier is intact");
 
-	if (minesweeper.isSunk() == true)
+	if (data.getMinesweeper().isSunk() == true)
 	    MINESWEEPER = ("Minesweeper is SUNK");
 
-	if (submarine.isSunk() == true)
+	if (data.getSubmarine().isSunk() == true)
 	    SUBMARINE = ("Submarine is SUNK");
 
-	if (destroyer.isSunk() == true)
+	if (data.getDestroyer().isSunk() == true)
 	    DESTROYER = ("Destroyer is SUNK");
 
-	if (battleship.isSunk() == true)
+	if (data.getBattleship().isSunk() == true)
 	    BATTLESHIP = ("Battleship is SUNK");
 
-	if (aircraftCarrier.isSunk() == true)
+	if (data.getAircraftCarrier().isSunk() == true)
 	    AIRCRAFTCARRIER = ("Aircraft Carrier is SUNK");
 
 	return (MINESWEEPER + "\n" + SUBMARINE + "\n" + DESTROYER + "\n"
@@ -442,16 +443,16 @@ public class Grid implements Serializable {
 	String Battleship = "Battleship NOT placed";
 	String AircraftCarrier = "Aircraft Carrier NOT placed";
 
-	if (minePlaced == true)
+	if (data.isMinePlaced() == true)
 	    Minesweeper = "Minesweeper has been placed";
 
-	if (destPlaced == true)
+	if (data.isDestPlaced() == true)
 	    Destroyer = "Destroyer has been placed";
 
-	if (subPlaced == true)
+	if (data.isSubPlaced() == true)
 	    Submarine = "Submarine has been placed";
 
-	if (battlePlaced == true)
+	if (data.isBattlePlaced() == true)
 	    Battleship = "Battleship has been placed";
 
 	if (isAirPlaced() == true)
@@ -462,19 +463,39 @@ public class Grid implements Serializable {
     }
     
     public int getNumberOfColumns() {
-	return numberOfColumns;
+	return data.getNumberOfColumns();
     }
 
     public int getNumberOfRows() {
-	return numberOfRows;
+	return data.getNumberOfRows();
     }
     
     public void setNumberOfColumns(int numberOfColumns) {
-	this.numberOfColumns = numberOfColumns;
+	this.data.setNumberOfColumns(numberOfColumns);
     }
     
     public void setNumberOfRows(int numberOfRows) {
-	this.numberOfRows = numberOfRows;
+	this.data.setNumberOfRows(numberOfRows);
+    }
+    
+    public boolean isMineShipSunk() {
+	return data.getMinesweeper().isSunk();
+    }
+
+    public boolean isSubmarineSunk() {
+	return data.getSubmarine().isSunk();
+    }
+
+    public boolean isDestroyerSunk() {
+	return data.getDestroyer().isSunk();
+    }
+
+    public boolean isBattleShipSunk() {
+	return data.getBattleship().isSunk();
+    }
+
+    public boolean isAircraftcarrierSunk() {
+	return data.getAircraftCarrier().isSunk();
     }
 
 }
