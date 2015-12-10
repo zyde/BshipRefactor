@@ -24,8 +24,8 @@ public class Grid implements Serializable {
     // two dimensional array to hold the board data
     private int[][] board;
 
-    private int userRow;
-    private int userColumn;
+    private int numberOfRows;
+    private int numberOfColumns;
 
     private boolean minePlaced = false;
     private boolean subPlaced = false;
@@ -40,62 +40,57 @@ public class Grid implements Serializable {
     private Battle battleship;
     private Air aircraftCarrier;
 
-    /**
-     * Constructs a two dimensional array which represent the game board. All
-     * elements in the two dimensional array on the grid are set to (zero) 0,
-     * which represents an empty grid The board's dimensions are determined by
-     * the parameters i and j
-     * 
-     * @param i
-     *            the number of rows of the grid
-     * @param j
-     *            the number of columns of the grid
-     */
-    public Grid(int i, int j) {
-	userRow = i;
-	userColumn = j;
 
-	board = new int[userRow][userColumn];
+    public Grid(int widthOfGrid, int heigthOfGrid) {
+	
+	setNumberOfRows(widthOfGrid);
+	setNumberOfColumns(heigthOfGrid);
 
-	for (int a = 0; i < userRow; i++)
-	    for (int b = 0; j < userColumn; j++)
+	initialize(widthOfGrid, heigthOfGrid);
+    }
+
+
+
+
+
+    private void initialize(int widthOfGrid, int heigthOfGrid) {
+	createBoard();
+
+	for (int a = 0; widthOfGrid < numberOfRows; widthOfGrid++)
+	    for (int b = 0; heigthOfGrid < numberOfColumns; heigthOfGrid++)
 		board[a][b] = 0;
     }
 
-    /**
-     * Returns the number of columns in the grid
-     */
-    public int getWidth() {
-	return userColumn;
-    }
 
-    /**
-     * Returns the number of rows in the grid
-     */
-    public int getLength() {
-	return userRow;
+
+
+
+    private void createBoard() {
+	board = new int[numberOfRows][numberOfColumns];
     }
+    
+
+    
+    
 
     /**
      * Checks the grid references and returns a boolean value if there is a ship
      * on that spot
      * 
-     * @param i
+     * @param columnIndex
      *            the column of the grid reference
-     * @param j
+     * @param rowIndex
      *            the row of the grid reference
      * @return a boolean value, true if the grid contains a ship and false if it
      *         contains either a miss or empty
      */
-    public boolean isValidPlaceForAShip(int i, int j) {
-	int index;
-	index = this.getGridVal(i, j);
+    public boolean isSpotVacant(int columnIndex, int rowIndex) {
+	int index = this.getGridVal(columnIndex, rowIndex);
 
 	if (index > 1 && index < 8) {
 	    return true;
-	} else {
-	    return false;
 	}
+	return false;
     }
 
     /**
@@ -109,110 +104,94 @@ public class Grid implements Serializable {
 	return allShipsSunk;
     }
 
-    public boolean checkMineSunk() {
+    public boolean isMineShipSunk() {
 	return minesweeper.isSunk();
     }
 
-    public boolean checkSubSunk() {
+    public boolean isSubmarineSunk() {
 	return submarine.isSunk();
     }
 
-    public boolean checkDestSunk() {
+    public boolean isDestroyerSunk() {
 	return destroyer.isSunk();
     }
 
-    public boolean checkBattleSunk() {
+    public boolean isBattleShipSunk() {
 	return battleship.isSunk();
     }
 
-    public boolean checkAirSunk() {
+    public boolean isAircraftcarrierSunk() {
 	return aircraftCarrier.isSunk();
     }
 
-    public boolean checkMinePlaced() {
-	if (minePlaced == true) {
-	    return true;
-	} else {
-	    return false;
-	}
+    public boolean isMineShipPlaced() {
+	return minePlaced;
     }
 
-    public void setMinePlacedTrue() {
+    public void setMineshipPlaced() {
 	minePlaced = true;
     }
 
-    public boolean addMine(int i, int j, int s) {
+    public boolean addMineship(int i, int j, int s) {
 	minesweeper = new Mine(this, i, j, s);
-	return checkMinePlaced();
+	return isMineShipPlaced();
     }
 
-    public boolean checkSubPlaced() {
-	if (subPlaced == true) {
-	    return true;
-	} else {
-	    return false;
-	}
+    public boolean isSubmarinePlaced() {
+	return subPlaced;
     }
 
-    public void setSubPlacedTrue() {
+    public void setSubmarinePlaced() {
 	subPlaced = true;
     }
 
     public boolean addSub(int i, int j, int s) {
 	submarine = new Sub(this, i, j, s);
-	return checkSubPlaced();
+	return isSubmarinePlaced();
     }
 
-    public boolean checkDestPlaced() {
-	if (destPlaced == true) {
-	    return true;
-	} else {
-	    return false;
-	}
+    public boolean isDestroyerPlaced() {
+	return destPlaced;
     }
 
-    public void setDestPlacedTrue() {
+    public void setDestroyerPlaced() {
 	destPlaced = true;
     }
 
-    public boolean addDest(int i, int j, int s) {
+    public boolean addDestroyer(int i, int j, int s) {
 	destroyer = new Dest(this, i, j, s);
-	return checkDestPlaced();
+	return isDestroyerPlaced();
     }
 
-    public boolean checkBattlePlaced() {
-	if (battlePlaced == true) {
-	    return true;
-	} else {
-	    return false;
-	}
+    public boolean isBattleShipPlaced() {
+	return battlePlaced;
     }
 
-    public void setBattlePlacedTrue() {
+    public void setBattleshipPlaced() {
 	battlePlaced = true;
     }
 
-    public boolean addBattle(int i, int j, int s) {
+    public boolean addBattleship(int i, int j, int s) {
 	battleship = new Battle(this, i, j, s);
-	return checkBattlePlaced();
+	return isBattleShipPlaced();
     }
 
     public boolean checkAirPlaced() {
-	if (isAirPlaced() == true) {
-	    return true;
-	} else {
-	    return false;
-	}
+	return airPlaced;
     }
 
-    public void setAirPlacedTrue() {
-	setAirPlaced(true);
+    public void setAirPlaced() {
+	airPlaced = true;
+    }
+    
+    public boolean isAirPlaced() {
+	return airPlaced;
     }
 
     public boolean allShipsPlaced() {
 
-	if ((checkMinePlaced() && checkSubPlaced() && checkDestPlaced()
-		&& checkBattlePlaced() && checkAirPlaced())) {
+	if ((isMineShipPlaced() && isSubmarinePlaced() && isDestroyerPlaced()
+		&& isBattleShipPlaced() && checkAirPlaced())) {
 	    return true;
 	} else {
 	    return false;
@@ -237,7 +216,7 @@ public class Grid implements Serializable {
      *            the value of the square
      */
     public void set(int i, int j, int value) {
-	if (i > userRow || j > userColumn)
+	if (i > numberOfRows || j > numberOfColumns)
 	    throw new IllegalArgumentException(
 		    "Number is bigger that the grid size");
 	if (i < 0 || j < 0 || value < 0)
@@ -262,7 +241,7 @@ public class Grid implements Serializable {
      *            the value of the square
      */
     public void update(int i, int j, int value) {
-	if (i > userRow || j > userColumn)
+	if (i > numberOfRows || j > numberOfColumns)
 	    throw new IllegalArgumentException(
 		    "Number is bigger that the grid size");
 	if (i < 0 || j < 0)
@@ -283,7 +262,7 @@ public class Grid implements Serializable {
     public int getGridVal(int i, int j) {
 	if (i < 0 || j < 0)
 	    throw new IllegalArgumentException("Number cannot be negative");
-	if (i > userRow || j > userColumn)
+	if (i > numberOfRows || j > numberOfColumns)
 	    throw new IllegalArgumentException(
 		    "Number is bigger that the grid size");
 	return board[i][j];
@@ -326,6 +305,7 @@ public class Grid implements Serializable {
 	    break;
 
 	case 3:
+	    submarine.isSunk();
 	    submarine.scoreHit();
 
 	    if (submarine.isSunk() == true)
@@ -409,9 +389,9 @@ public class Grid implements Serializable {
 	String r = "";
 
 	// change these to ROWS to use the default
-	for (int i = 0; i < userRow; i++) {
+	for (int i = 0; i < numberOfRows; i++) {
 	    r = r + "|";
-	    for (int j = 0; j < userColumn; j++)
+	    for (int j = 0; j < numberOfColumns; j++)
 		// change this to CoLumns for default
 		r = r + board[i][j];
 	    r = r + "|\n";
@@ -480,13 +460,21 @@ public class Grid implements Serializable {
 	return Minesweeper + "\n" + Destroyer + "\n" + Submarine + "\n"
 		+ Battleship + "\n" + AircraftCarrier;
     }
-
-    public void setAirPlaced(boolean airPlaced) {
-	this.airPlaced = airPlaced;
+    
+    public int getNumberOfColumns() {
+	return numberOfColumns;
     }
 
-    public boolean isAirPlaced() {
-	return airPlaced;
+    public int getNumberOfRows() {
+	return numberOfRows;
+    }
+    
+    public void setNumberOfColumns(int numberOfColumns) {
+	this.numberOfColumns = numberOfColumns;
+    }
+    
+    public void setNumberOfRows(int numberOfRows) {
+	this.numberOfRows = numberOfRows;
     }
 
 }
