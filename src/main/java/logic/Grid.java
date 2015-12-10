@@ -1,16 +1,5 @@
 package src.main.java.logic;
 
-/*
- * Author: Michael Okarimia
- * Created: 10 November 2004 15:43:46
- * Modified: 10 November 2004 15:43:46
- * This program creates a grid that a game of 
- * Battleships can be played on
- * Improvements from code1 are:
- * 1: Destroyer ship now added
- * 2: Horizontal and vertical positioning is determined by int not char
- * 3: Grid is now Serializable
- */
 
 import java.io.Serializable;
 
@@ -22,24 +11,21 @@ import src.main.java.logic.ships.Sub;
 
 public class Grid implements Serializable {
 
+    
     private GridData data = new GridData();
 
+    
 
     public Grid(int widthOfGrid, int heigthOfGrid) {
-	
 	setNumberOfRows(widthOfGrid);
 	setNumberOfColumns(heigthOfGrid);
-
 	initialize(widthOfGrid, heigthOfGrid);
     }
 
 
-
-
-
+    
     private void initialize(int widthOfGrid, int heigthOfGrid) {
 	createBoard();
-
 	for (int a = 0; widthOfGrid < data.getNumberOfRows(); widthOfGrid++)
 	    for (int b = 0; heigthOfGrid < data.getNumberOfColumns(); heigthOfGrid++)
 		data.getGameDataBoard()[a][b] = 0;
@@ -48,14 +34,6 @@ public class Grid implements Serializable {
 
 
 
-
-    private void createBoard() {
-	data.setGameDataBoard(new int[data.getNumberOfRows()][data.getNumberOfColumns()]);
-    }
-    
-
-    
-   
     public boolean isSpotReserved(int columnIndex, int rowIndex) {
 	int index = getGridVal(columnIndex, rowIndex);
 
@@ -65,13 +43,6 @@ public class Grid implements Serializable {
 	return false;
     }
 
-
-
-
-
-    private boolean hasInsertedValue(int index) {
-	return index > 1 && index < 8;
-    }
 
     
     public boolean areShipsSunk() {
@@ -145,13 +116,11 @@ public class Grid implements Serializable {
     }
 
     public boolean allShipsPlaced() {
-
 	if ((isMineShipPlaced() && isSubmarinePlaced() && isDestroyerPlaced()
 		&& isBattleShipPlaced() && checkAirPlaced())) {
 	    return true;
-	} else {
-	    return false;
 	}
+	return false;
     }
 
     public boolean addAir(int i, int j, int s) {
@@ -272,195 +241,206 @@ public class Grid implements Serializable {
     /**
      * Fires a shot on the grid
      */
-    public boolean shot(int i, int j) {
-	int sqr = this.getGridVal(i, j);
-	String output = ("Shot at " + i + "," + j + " value of square is " + sqr);
+    public boolean shot(int rowIndex, int columnIndex) {
+	int square = getGridVal(rowIndex, columnIndex);
+	String outputString = "Shot at " + rowIndex + "," + columnIndex + " value of square is " + square;
 	boolean hit = false;
 
-	switch (sqr) {
+	switch (square) {
 	case 0:
 	    hit = false;
-	    output = ("Shot at " + i + "," + j + " MISS"
-		    + " value of square is " + sqr);
-	    this.update(i, j, 1);
+	    outputString = missHit(rowIndex, columnIndex, square);
 	    break;
 	case 1:
 	    hit = false;
-	    output = ("Shot at " + i + "," + j
-		    + " INVALID shot already taken here"
-		    + " value of square is " + sqr);
+	    outputString = squareTakenHit(rowIndex, columnIndex, square);
 	    break;
 
 	case 2:
-	    data.getMinesweeper().scoreHit();
-
-	    if (data.getMinesweeper().isSunk() == true)
-		output = ("Shot at " + i + "," + j + " HIT & SUNK Minesweeper"
-			+ " value of square is " + sqr);
-
-	    else if (data.getMinesweeper().isSunk() == false)
-		output = ("Shot at " + i + "," + j + " HIT "
-			+ " value of square is " + sqr);
-	    this.update(i, j, (sqr - 8));
+	    outputString = mineSweeperHit(rowIndex, columnIndex, square);
 	    hit = true;
 	    break;
 
 	case 3:
-	    data.getSubmarine().isSunk();
-	    data.getSubmarine().scoreHit();
-
-	    if (data.getSubmarine().isSunk() == true)
-		output = ("Shot at " + i + "," + j + " HIT & SUNK Submarine"
-			+ " value of square is " + sqr);
-
-	    else if (data.getSubmarine().isSunk() == false)
-		output = ("Shot at " + i + "," + j + " HIT "
-			+ " value of square is " + sqr);
-	    this.update(i, j, (sqr - 8));
+	    outputString = submarineHit(rowIndex, columnIndex, square);
 	    hit = true;
 	    break;
 
 	case 4:
-	    data.getBattleship().scoreHit();
-
-	    if (data.getBattleship().isSunk() == true)
-		output = ("Shot at " + i + "," + j + " HIT & SUNK Battleship"
-			+ " value of square is " + sqr);
-
-	    else if (data.getBattleship().isSunk() == false)
-		output = ("Shot at " + i + "," + j + " HIT "
-			+ " value of square is " + sqr);
-	    this.update(i, j, (sqr - 8));
+	    outputString = battleShipHit(rowIndex, columnIndex, square);
 	    hit = true;
 	    break;
 
 	case 5:
-	    data.getAircraftCarrier().scoreHit();
-
-	    if (data.getAircraftCarrier().isSunk() == true)
-		output = ("Shot at " + i + "," + j
-			+ " HIT & SUNK Aircraft Carrier"
-			+ " value of square is " + sqr);
-
-	    else if (data.getAircraftCarrier().isSunk() == false)
-		output = ("Shot at " + i + "," + j + " HIT "
-			+ " value of square is " + sqr);
-	    this.update(i, j, (sqr - 8));
+	    outputString = aircraftCarrierHit(rowIndex, columnIndex, square);
 	    hit = true;
 	    break;
 
 	case 7:
-	    data.getDestroyer().scoreHit();
-
-	    if (data.getDestroyer().isSunk() == true)
-		output = ("Shot at " + i + "," + j + " HIT & SUNK destroyer"
-			+ " value of square is " + sqr);
-
-	    else if (data.getDestroyer().isSunk() == false)
-		output = ("Shot at " + i + "," + j + " HIT "
-			+ " value of square is " + sqr);
-	    this.update(i, j, (sqr - 8));
+	    outputString = destroyerHit(rowIndex, columnIndex, square);
 	    hit = true;
 	    break;
 
 	default:
-	    output = ("Shot at " + i + "," + j
-		    + " ERROR shot is either already hit, or incorect"
-		    + " value of square is " + sqr);
+	    outputString = incorrectHit(rowIndex, columnIndex, square);
 	    break;
 	}
 
-	if (sqr < 0)
-	    output = ("Shot at "
-		    + i
-		    + ","
-		    + j
-		    + " ERROR location contains a sunk ship. Value of square is " + sqr);
+	if (square < 0)
+	    outputString = sunkShipHit(rowIndex, columnIndex, square);
 	return hit;
 
     }
 
-    /**
-     * Creates a string representation of the game board like so: |000| |050|
-     * |000|
-     * 
-     * @return the string representation
-     */
-    public String toString() {
-	String r = "";
 
-	// change these to ROWS to use the default
-	for (int i = 0; i < data.getNumberOfRows(); i++) {
-	    r = r + "|";
-	    for (int j = 0; j < data.getNumberOfColumns(); j++)
-		// change this to CoLumns for default
-		r = r + data.getGameDataBoard()[i][j];
-	    r = r + "|\n";
-	}
-	return r;
+
+
+
+    private String incorrectHit(int rowIndex, int columnIndex, int square) {
+	String outputString;
+	outputString = "Shot at " + rowIndex + "," + columnIndex
+	    + " ERROR shot is either already hit, or incorect"
+	    + " value of square is " + square;
+	return outputString;
     }
 
-    /**
-     * Returns a string output of the status of the ships on the grid, whever
-     * they are sunk or not.
-     */
-    public String printIsSunk() {
-	String MINESWEEPER = ("Minesweeper is intact");
-	String SUBMARINE = ("Submarine is intact");
-	String DESTROYER = ("Destroyer is intact");
-	String BATTLESHIP = ("Battleship is intact");
-	String AIRCRAFTCARRIER = ("Aircraft Carrier is intact");
 
-	if (data.getMinesweeper().isSunk() == true)
-	    MINESWEEPER = ("Minesweeper is SUNK");
 
-	if (data.getSubmarine().isSunk() == true)
-	    SUBMARINE = ("Submarine is SUNK");
+
+
+    private String sunkShipHit(int rowIndex, int columnIndex, int square) {
+	String outputString;
+	outputString = "Shot at "
+	    + rowIndex
+	    + ","
+	    + columnIndex
+	    + " ERROR location contains a sunk ship. Value of square is " + square;
+	return outputString;
+    }
+
+
+
+
+
+    private String destroyerHit(int rowIndex, int columnIndex, int square) {
+	String outputString = "";
+	data.getDestroyer().scoreHit();
 
 	if (data.getDestroyer().isSunk() == true)
-	    DESTROYER = ("Destroyer is SUNK");
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT & SUNK destroyer"
+		+ " value of square is " + square);
 
-	if (data.getBattleship().isSunk() == true)
-	    BATTLESHIP = ("Battleship is SUNK");
+	else if (data.getDestroyer().isSunk() == false)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT "
+		+ " value of square is " + square);
+	this.update(rowIndex, columnIndex, (square - 8));
+	return outputString;
+    }
+
+
+
+
+
+    private String aircraftCarrierHit(int rowIndex, int columnIndex, int square) {
+	String outputString = "";
+	data.getAircraftCarrier().scoreHit();
 
 	if (data.getAircraftCarrier().isSunk() == true)
-	    AIRCRAFTCARRIER = ("Aircraft Carrier is SUNK");
+        	outputString = ("Shot at " + rowIndex + "," + columnIndex
+        		+ " HIT & SUNK Aircraft Carrier"
+        		+ " value of square is " + square);
 
-	return (MINESWEEPER + "\n" + SUBMARINE + "\n" + DESTROYER + "\n"
-		+ BATTLESHIP + "\n" + AIRCRAFTCARRIER);
+	else if (data.getAircraftCarrier().isSunk() == false)
+        	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT "
+        		+ " value of square is " + square);
+	this.update(rowIndex, columnIndex, (square - 8));
+	return outputString;
     }
 
-    /**
-     * Returns the a string returning the value of each ship's IsPlaced flag. If
-     * a ship is placed this flag will change to true and the this method will
-     * return a string confirming this.
-     */
-    public String printIsPlaced() {
-	System.out.println("The following ships are now placed ");
-	String Minesweeper = "Minesweeper NOT Placed";
-	String Destroyer = "Destroyer NOT Placed";
-	String Submarine = "Submarine NOT placed";
-	String Battleship = "Battleship NOT placed";
-	String AircraftCarrier = "Aircraft Carrier NOT placed";
 
-	if (data.isMinePlaced() == true)
-	    Minesweeper = "Minesweeper has been placed";
 
-	if (data.isDestPlaced() == true)
-	    Destroyer = "Destroyer has been placed";
 
-	if (data.isSubPlaced() == true)
-	    Submarine = "Submarine has been placed";
 
-	if (data.isBattlePlaced() == true)
-	    Battleship = "Battleship has been placed";
+    private String battleShipHit(int rowIndex, int columnIndex, int square) {
+	String outputString = "";
+	data.getBattleship().scoreHit();
 
-	if (isAirPlaced() == true)
-	    AircraftCarrier = "Aircraft Carrier has been placed";
+	if (data.getBattleship().isSunk() == true)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT & SUNK Battleship"
+		+ " value of square is " + square);
 
-	return Minesweeper + "\n" + Destroyer + "\n" + Submarine + "\n"
-		+ Battleship + "\n" + AircraftCarrier;
+	else if (data.getBattleship().isSunk() == false)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT "
+		+ " value of square is " + square);
+	this.update(rowIndex, columnIndex, (square - 8));
+	
+	return outputString;
     }
+
+
+
+
+
+    private String submarineHit(int rowIndex, int columnIndex, int square) {
+	String outputString= "";
+	data.getSubmarine().isSunk();
+	data.getSubmarine().scoreHit();
+
+	if (data.getSubmarine().isSunk() == true)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT & SUNK Submarine"
+		+ " value of square is " + square);
+
+	else if (data.getSubmarine().isSunk() == false)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT "
+		+ " value of square is " + square);
+	this.update(rowIndex, columnIndex, (square - 8));
+	
+	return outputString;
+    }
+
+
+
+
+
+    private String mineSweeperHit(int rowIndex, int columnIndex, int square) {
+	String outputString = "";
+	data.getMinesweeper().scoreHit();
+
+	if (data.getMinesweeper().isSunk() == true)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT & SUNK Minesweeper"
+		+ " value of square is " + square);
+
+	else if (data.getMinesweeper().isSunk() == false)
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " HIT "
+		+ " value of square is " + square);
+	this.update(rowIndex, columnIndex, (square - 8));
+	return outputString;
+    }
+
+
+
+
+
+    private String squareTakenHit(int rowIndex, int columnIndex, int square) {
+	String outputString;
+	outputString = ("Shot at " + rowIndex + "," + columnIndex
+	    + " INVALID shot already taken here"
+	    + " value of square is " + square);
+	return outputString;
+    }
+
+
+
+
+
+    private String missHit(int rowIndex, int columnIndex, int square) {
+	String outputString;
+	outputString = ("Shot at " + rowIndex + "," + columnIndex + " MISS"
+	    + " value of square is " + square);
+	this.update(rowIndex, columnIndex, 1);
+	return outputString;
+    }
+    
     
     public int getNumberOfColumns() {
 	return data.getNumberOfColumns();
@@ -496,6 +476,28 @@ public class Grid implements Serializable {
 
     public boolean isAircraftcarrierSunk() {
 	return data.getAircraftCarrier().isSunk();
+    }
+
+    private void createBoard() {
+	data.setGameDataBoard(new int[data.getNumberOfRows()][data.getNumberOfColumns()]);
+    }
+
+    private boolean hasInsertedValue(int index) {
+	return index > 1 && index < 8;
+    }
+    
+    
+    @Override
+    public String toString() {
+	String result = "";
+
+	for (int i = 0; i < data.getNumberOfRows(); i++) {
+	    result = result + "|";
+	    for (int j = 0; j < data.getNumberOfColumns(); j++)
+		result = result + data.getGameDataBoard()[i][j];
+	    result = result + "|\n";
+	}
+	return result;
     }
 
 }
