@@ -1,10 +1,10 @@
 package src.main.java.logic;
 
-import src.main.java.logic.ships.Air;
-import src.main.java.logic.ships.Battle;
-import src.main.java.logic.ships.Dest;
-import src.main.java.logic.ships.Mine;
-import src.main.java.logic.ships.Sub;
+import src.main.java.logic.ships.AircraftCarrier;
+import src.main.java.logic.ships.Battleship;
+import src.main.java.logic.ships.Destroyer;
+import src.main.java.logic.ships.Minesweeper;
+import src.main.java.logic.ships.Submarine;
 
 public class GridData {
     private int[][] gameDataBoard;
@@ -15,11 +15,11 @@ public class GridData {
     private boolean destPlaced;
     private boolean battlePlaced;
     private boolean airPlaced;
-    private Mine minesweeper;
-    private Sub submarine;
-    private Dest destroyer;
-    private Battle battleship;
-    private Air aircraftCarrier;
+    private Minesweeper minesweeper;
+    private Submarine submarine;
+    private Destroyer destroyer;
+    private Battleship battleship;
+    private AircraftCarrier aircraftCarrier;
 
     
     
@@ -103,43 +103,43 @@ public class GridData {
 	this.airPlaced = airPlaced;
     }
 
-    public Mine getMinesweeper() {
+    public Minesweeper getMinesweeper() {
 	return minesweeper;
     }
 
-    public void setMinesweeper(Mine minesweeper) {
+    public void setMinesweeper(Minesweeper minesweeper) {
 	this.minesweeper = minesweeper;
     }
 
-    public Sub getSubmarine() {
+    public Submarine getSubmarine() {
 	return submarine;
     }
 
-    public void setSubmarine(Sub submarine) {
+    public void setSubmarine(Submarine submarine) {
 	this.submarine = submarine;
     }
 
-    public Dest getDestroyer() {
+    public Destroyer getDestroyer() {
 	return destroyer;
     }
 
-    public void setDestroyer(Dest destroyer) {
+    public void setDestroyer(Destroyer destroyer) {
 	this.destroyer = destroyer;
     }
 
-    public Battle getBattleship() {
+    public Battleship getBattleship() {
 	return battleship;
     }
 
-    public void setBattleship(Battle battleship) {
+    public void setBattleship(Battleship battleship) {
 	this.battleship = battleship;
     }
 
-    public Air getAircraftCarrier() {
+    public AircraftCarrier getAircraftCarrier() {
 	return aircraftCarrier;
     }
 
-    public void setAircraftCarrier(Air aircraftCarrier) {
+    public void setAircraftCarrier(AircraftCarrier aircraftCarrier) {
 	this.aircraftCarrier = aircraftCarrier;
     }
 }

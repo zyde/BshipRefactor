@@ -30,7 +30,7 @@ public class Submarine
 			//Shape of Submarine
 			g.fillOval(xLeft, yTop, 20, 60);
 			
-			//Detail of the Sub
+			//Detail of the Submarine
 			g.setColor(Color.black);
 			g.drawOval(xLeft, yTop, 20, 60); //Outline of the submarine
 			g.drawOval(xLeft+5, yTop +5, 10, 10);
@@ -91,7 +91,7 @@ public class Submarine
 			//Shape of Submarine
 			g.fillOval(xLeft, yTop, 40, 120);
 			
-			//Detail of the Sub
+			//Detail of the Submarine
 			g.setColor(Color.black);
 			g.drawOval(xLeft, yTop, 40, 120); //Outline of the submarine
 			g.drawOval(xLeft+10, yTop +10, 20, 20);

@@ -34,11 +34,11 @@ import src.main.java.logic.Grid;
  * @throws PositionOccupiedException
  *             if any of the 3 elements about to be filled are already filled
  */
-public class Sub extends Ship implements Serializable {
+public class Submarine extends Ship implements Serializable {
     // public Grid board = null;
     private int segments = 3;
 
-    public Sub(Grid board, int i, int j, int s) {
+    public Submarine(Grid board, int i, int j, int s) {
 
 
 	if (board.isSubmarinePlaced() == true)

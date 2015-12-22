@@ -3,11 +3,11 @@ package src.main.java.logic;
 
 import java.io.Serializable;
 
-import src.main.java.logic.ships.Air;
-import src.main.java.logic.ships.Battle;
-import src.main.java.logic.ships.Dest;
-import src.main.java.logic.ships.Mine;
-import src.main.java.logic.ships.Sub;
+import src.main.java.logic.ships.AircraftCarrier;
+import src.main.java.logic.ships.Battleship;
+import src.main.java.logic.ships.Destroyer;
+import src.main.java.logic.ships.Minesweeper;
+import src.main.java.logic.ships.Submarine;
 
 public class Grid implements Serializable {
 
@@ -60,7 +60,7 @@ public class Grid implements Serializable {
     }
 
     public boolean addMineship(int i, int j, int s) {
-	data.setMinesweeper(new Mine(this, i, j, s));
+	data.setMinesweeper(new Minesweeper(this, i, j, s));
 	return isMineShipPlaced();
     }
 
@@ -73,7 +73,7 @@ public class Grid implements Serializable {
     }
 
     public boolean addSub(int i, int j, int s) {
-	data.setSubmarine(new Sub(this, i, j, s));
+	data.setSubmarine(new Submarine(this, i, j, s));
 	return isSubmarinePlaced();
     }
 
@@ -86,7 +86,7 @@ public class Grid implements Serializable {
     }
 
     public boolean addDestroyer(int i, int j, int s) {
-	data.setDestroyer(new Dest(this, i, j, s));
+	data.setDestroyer(new Destroyer(this, i, j, s));
 	return isDestroyerPlaced();
     }
 
@@ -99,7 +99,7 @@ public class Grid implements Serializable {
     }
 
     public boolean addBattleship(int i, int j, int s) {
-	data.setBattleship(new Battle(this, i, j, s));
+	data.setBattleship(new Battleship(this, i, j, s));
 	return isBattleShipPlaced();
     }
 
@@ -124,7 +124,7 @@ public class Grid implements Serializable {
     }
 
     public boolean addAir(int i, int j, int s) {
-	data.setAircraftCarrier(new Air(this, i, j, s));
+	data.setAircraftCarrier(new AircraftCarrier(this, i, j, s));
 	return checkAirPlaced();
     }
 

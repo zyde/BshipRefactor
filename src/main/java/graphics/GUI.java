@@ -287,7 +287,7 @@ public class GUI extends JFrame {
 		    AircraftCarrierH.paint(hp, (j * 20), (i * 20));
 		    out = out + data.gameState.playerHomeGrid.toString();
 		    data.gameState.playerHomeGrid.setAirPlaced();
-		    getOutText().setText("Air Placed");
+		    getOutText().setText("AircraftCarrier Placed");
 		} else {
 		    getOutText().setText("Aircraft Carrier Will Not Fit Here");
 		    out = "not valid";
@@ -303,7 +303,7 @@ public class GUI extends JFrame {
 		    AircraftCarrier.paint(hp, (j * 20), (i * 20));
 		    out = out + data.gameState.playerHomeGrid.toString();
 		    data.gameState.playerHomeGrid.setAirPlaced();
-		    getOutText().setText("Air Placed");
+		    getOutText().setText("AircraftCarrier Placed");
 		} else {
 		    out = "not valid";
 		    out = out + data.gameState.playerHomeGrid.toString();

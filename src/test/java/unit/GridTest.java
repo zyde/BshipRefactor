@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import src.main.java.logic.Grid;
 import src.main.java.logic.ships.Ship;
-import src.main.java.logic.ships.Sub;
+import src.main.java.logic.ships.Submarine;
 
 
 public class GridTest {
