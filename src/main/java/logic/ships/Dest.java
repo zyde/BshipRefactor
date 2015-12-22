@@ -41,10 +41,10 @@ public class Dest extends Ship implements Serializable {
      */
     public Dest(Grid board, int i, int j, int s) {
 
-	int userColumn = board.getWidth();
-	int userRow = board.getLength();
+	int userColumn = board.getNumberOfColumns();
+	int userRow = board.getNumberOfRows();
 
-	boolean destPlaced = board.checkDestPlaced();
+	boolean destPlaced = board.isDestroyerPlaced();
 
 	if (s < 0 || s > 1)
 	    throw new IllegalArgumentException();
@@ -68,7 +68,7 @@ public class Dest extends Ship implements Serializable {
 		for (int c = j; c < j + 3; c++)
 		    if (board.getGridVal(i, c) == 0) {
 			board.update(i, c, 7);
-			board.setDestPlacedTrue();
+			board.setDestroyerPlaced();
 		    }
 	    }
 
@@ -103,7 +103,7 @@ public class Dest extends Ship implements Serializable {
 		for (int r = i; r < i + 3; r++)
 		    if (board.getGridVal(r, j) == 0) {
 			board.update(r, j, 7);
-			board.setDestPlacedTrue();
+			board.setDestroyerPlaced();
 		    }
 	    }
 

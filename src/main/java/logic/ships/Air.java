@@ -42,8 +42,8 @@ public class Air extends Ship implements Serializable {
      */
     public Air(Grid board, int i, int j, int s) {
 
-	int userColumn = board.getWidth();
-	int userRow = board.getLength();
+	int userColumn = board.getNumberOfColumns();
+	int userRow = board.getNumberOfRows();
 
 	boolean airPlaced = board.checkAirPlaced();
 
@@ -65,7 +65,7 @@ public class Air extends Ship implements Serializable {
 		for (int c = j; c < j + 5; c++)
 		    if (board.getGridVal(i, c) == 0) {
 			board.update(i, c, 5);
-			board.setAirPlacedTrue();
+			board.setAirPlaced();
 		    }
 	    }
 
@@ -101,7 +101,7 @@ public class Air extends Ship implements Serializable {
 		for (int r = i; r < i + 5; r++)
 		    if (board.getGridVal(r, j) == 0) {
 			board.update(r, j, 5);
-			board.setAirPlacedTrue();
+			board.setAirPlaced();
 		    }
 
 	    }

@@ -42,10 +42,10 @@ public class Battle extends Ship implements Serializable {
      */
     public Battle(Grid board, int i, int j, int s) {
 
-	int userColumn = board.getWidth();
-	int userRow = board.getLength();
+	int userColumn = board.getNumberOfColumns();
+	int userRow = board.getNumberOfRows();
 
-	boolean battlePlaced = board.checkBattlePlaced();
+	boolean battlePlaced = board.isBattleShipPlaced();
 
 	if (s < 0 || s > 1)
 	    throw new IllegalArgumentException();
@@ -66,7 +66,7 @@ public class Battle extends Ship implements Serializable {
 		for (int c = j; c < j + 4; c++)
 		    if (board.getGridVal(i, c) == 0) {
 			board.update(i, c, 4);
-			board.setBattlePlacedTrue();
+			board.setBattleshipPlaced();
 		    }
 
 	    }
@@ -103,7 +103,7 @@ public class Battle extends Ship implements Serializable {
 		for (int r = i; r < i + 4; r++)
 		    if (board.getGridVal(r, j) == 0) {
 			board.update(r, j, 4);
-			board.setBattlePlacedTrue();
+			board.setBattleshipPlaced();
 		    }
 
 	    }

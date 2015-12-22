@@ -101,7 +101,7 @@ public class Agent {
 		j = refs[1];
 	    } else {
 		int loop = 0;
-		while (g.isValidPlaceForAShip(i, j) && !noneFound) {
+		while (g.isSpotReserved(i, j) && !noneFound) {
 		    if (loop == 100)
 			noneFound = true;
 		    for (int q = 2; q < refs.length - 1; q++) {
@@ -142,7 +142,7 @@ public class Agent {
 	    o = gen.rand(2);
 	    System.out.println("vertical battle x = " + x + "\n");
 	    System.out.println("vertical battle y = " + y + "\n");
-	    g.addBattle(x, y, o);
+	    g.addBattleship(x, y, o);
 
 	    x = gen.rand(10);
 	    y = gen.rand(10);
@@ -156,14 +156,14 @@ public class Agent {
 	    o = gen.rand(2);
 	    System.out.println("vertical mine x = " + x + "\n");
 	    System.out.println("vertical mine y = " + y + "\n");
-	    g.addMine(x, y, o);
+	    g.addMineship(x, y, o);
 
 	    x = gen.rand(10);
 	    y = gen.rand(10);
 	    o = gen.rand(2);
 	    System.out.println("horizontal dest x = " + x + "\n");
 	    System.out.println("horizontal dest y = " + y + "\n");
-	    g.addDest(x, y, o);
+	    g.addDestroyer(x, y, o);
 
 	}
 	System.out.println("agent grid");

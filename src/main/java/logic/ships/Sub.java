@@ -40,40 +40,27 @@ public class Sub extends Ship implements Serializable {
 
     public Sub(Grid board, int i, int j, int s) {
 
-	int userColumn = board.getWidth();
-	int userRow = board.getLength();
 
-	boolean subPlaced = board.checkSubPlaced();
-
-	if (subPlaced == true)
+	if (board.isSubmarinePlaced() == true)
 	    System.out.println("Submarine already placed\n");
 
 	if (s < 0 || s > 1)
 	    throw new IllegalArgumentException();
 
-	if (s < 0 || s > 1)
-	    throw new IllegalArgumentException();
 
-	if (subPlaced == true)
-	    System.out.println("Submarine already placed\n");
-
-	if (subPlaced == false && s == 0)
+	if (board.isSubmarinePlaced() == false && s == 0)
 
 	    try {
-		if (board.getGridVal(i, j) != 0)
-		    throw new InitialPositionOccupiedException();
-		if (j + 3 > userColumn)
-		    throw new PositionExceedsBoardException();
+		checkPositionAvailabilty(board, i, j);
+		
+		checkWidthAvailability(board, j);
 
-		for (int c = j; c < j + 3; c++)
-		    while (board.getGridVal(i, c) != 0) {
-			throw new PositionOccupiedException();
-		    }
+		checkPositionOccupied(board, i, j);
 
 		for (int c = j; c < j + 3; c++)
 		    if (board.getGridVal(i, c) == 0) {
 			board.update(i, c, 3);
-			board.setSubPlacedTrue();
+			board.setSubmarinePlaced();
 		    }
 	    }
 
@@ -92,12 +79,12 @@ public class Sub extends Ship implements Serializable {
 			.println("Cannot place horizontal submarine here, initial point is already occupied \n");
 	    }
 
-	else if (subPlaced == false && s == 1)
+	else if (board.isSubmarinePlaced() == false && s == 1)
 	    try {
 
 		if (board.getGridVal(i, j) != 0)
 		    throw new PositionOccupiedException();
-		if (i + 3 > userRow)
+		if (i + 3 > board.getNumberOfRows())
 		    throw new PositionExceedsBoardException();
 
 		for (int r = i; r < i + 3; r++)
@@ -108,7 +95,7 @@ public class Sub extends Ship implements Serializable {
 		for (int r = i; r < i + 3; r++)
 		    if (board.getGridVal(r, j) == 0) {
 			board.update(r, j, 3);
-			board.setSubPlacedTrue();
+			board.setSubmarinePlaced();
 		    }
 	    }
 
@@ -128,6 +115,33 @@ public class Sub extends Ship implements Serializable {
 	    }
     }
 
+    private void checkPositionOccupied(Grid board, int i, int j) {
+	for (int c = j; c < j + 3; c++)
+	    while (board.getGridVal(i, c) != 0) {
+		throw new PositionOccupiedException();
+	    }
+    }
+
+    private void checkWidthAvailability(Grid board, int j) {
+	try{
+	    if (j + 3 > board.getNumberOfColumns())
+		throw new PositionExceedsBoardException();
+	}
+	catch (PositionExceedsBoardException Exception) {
+	    	System.out.println("Cannot place horizontal submarine here, ship will not fit on grid \n");
+	}
+    }
+
+    private void checkPositionAvailabilty(Grid board, int i, int j) {
+	try {
+	    	if (board.getGridVal(i, j) != 0)
+	    	    throw new InitialPositionOccupiedException();
+	}
+	catch (InitialPositionOccupiedException Exception) {
+		System.out.println("Cannot place horizontal submarine here, position is occupied \n");
+	   }
+    }
+
     public boolean isSunk() {
 	if (segments == 0)
 	    return true;
@@ -139,6 +153,7 @@ public class Sub extends Ship implements Serializable {
      * Reduces the number of undamaged segments of the ship by one when called.
      */
     public void scoreHit() {
+	System.out.println(segments);
 	segments = segments - 1;
 
 	if (segments < 0)

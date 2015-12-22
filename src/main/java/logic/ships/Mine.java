@@ -44,10 +44,10 @@ public class Mine extends Ship implements Serializable {
      */
     public Mine(Grid board, int i, int j, int s) {
 	// Grid board;
-	int userColumn = board.getWidth();
-	int userRow = board.getLength();
+	int userColumn = board.getNumberOfColumns();
+	int userRow = board.getNumberOfRows();
 
-	boolean minePlaced = board.checkMinePlaced();
+	boolean minePlaced = board.isMineShipPlaced();
 
 	if (minePlaced == true)
 	    System.out.println("Minesweeper already placed\n");
@@ -69,9 +69,9 @@ public class Mine extends Ship implements Serializable {
 
 		for (int c = j; c < j + 2; c++)
 		    if (board.getGridVal(i, c) == 0) {
-			board.set(i, c, 2);
+			board.setShip(i, c, 2);
 
-			board.setMinePlacedTrue();
+			board.setMineshipPlaced();
 		    }
 
 	    }
@@ -107,9 +107,9 @@ public class Mine extends Ship implements Serializable {
 
 		for (int r = i; r < i + 2; r++)
 		    if (board.getGridVal(r, j) == 0) {
-			board.set(r, j, 2);
+			board.setShip(r, j, 2);
 
-			board.setMinePlacedTrue();
+			board.setMineshipPlaced();
 		    }
 	    }
 

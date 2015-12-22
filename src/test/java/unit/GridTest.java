@@ -22,7 +22,7 @@ public class GridTest {
     
     @Test
     public void checkSubNotSunkTest() {
-	assertEquals(false, grid.checkSubSunk());
+	assertEquals(false, grid.isSubmarineSunk());
     }
     
     @Test
@@ -30,6 +30,6 @@ public class GridTest {
 	grid.shot(0, 0);
 	grid.shot(0, 1);
 	grid.shot(0, 2);	
-	assertEquals(true, grid.checkSubSunk());
+	assertEquals(true, grid.isSubmarineSunk());
     }
 }

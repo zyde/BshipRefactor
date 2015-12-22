@@ -118,7 +118,7 @@ public class BattleShipsEngine {
     private static void determineIfShotSunkAShip(GUI gui, Agent smith) {
 	System.out.println("Player Home board \n"
 		+ gui.data.gameState.playerHomeGrid.toString());
-	if (gui.data.gameState.playerHomeGrid.checkMineSunk()
+	if (gui.data.gameState.playerHomeGrid.isMineShipSunk()
 		&& !gui.getPaintMineSunk()) {
 	    for (int i = 0; i < 10; i++) // change these to ROWS to use the
 					 // default
@@ -134,7 +134,7 @@ public class BattleShipsEngine {
 	    }
 	}
 
-	if (gui.data.gameState.playerHomeGrid.checkDestSunk()
+	if (gui.data.gameState.playerHomeGrid.isDestroyerSunk()
 		&& !gui.getPaintDestSunk()) {
 	    for (int i = 0; i < 10; i++) // change these to ROWS to use the
 					 // default
@@ -150,7 +150,7 @@ public class BattleShipsEngine {
 	    }
 	}
 
-	if (gui.data.gameState.playerHomeGrid.checkSubSunk()
+	if (gui.data.gameState.playerHomeGrid.isSubmarineSunk()
 		&& !gui.getPaintSubSunk()) {
 	    for (int i = 0; i < 10; i++) // change these to ROWS to use the
 					 // default
@@ -166,7 +166,7 @@ public class BattleShipsEngine {
 	    }
 	}
 
-	if (gui.data.gameState.playerHomeGrid.checkBattleSunk()
+	if (gui.data.gameState.playerHomeGrid.isBattleShipSunk()
 		&& !gui.getPaintBattleSunk()) {
 	    for (int i = 0; i < 10; i++) // change these to ROWS to use the
 					 // default
@@ -182,7 +182,7 @@ public class BattleShipsEngine {
 	    }
 	}
 
-	if (gui.data.gameState.playerHomeGrid.checkAirSunk()
+	if (gui.data.gameState.playerHomeGrid.isAircraftcarrierSunk()
 		&& !gui.getPaintAirSunk()) {
 	    for (int i = 0; i < 10; i++) // change these to ROWS to use the
 					 // default

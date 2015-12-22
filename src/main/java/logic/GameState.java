@@ -60,23 +60,23 @@ public class GameState {
 
     public void outputHitList(JTextComponent displayTextbox) {
 
-	if (compHomeGrid.checkAirSunk()) {
+	if (compHomeGrid.isAircraftcarrierSunk()) {
 	    displayTextbox
 		    .setText("You Have sunk the Agent's Aircraft Carrier");
 	}
-	if (compHomeGrid.checkBattleSunk()) {
+	if (compHomeGrid.isBattleShipSunk()) {
 	    displayTextbox.setText(displayTextbox.getText()
 		    + ("You Have sunk the Agent's Battleship"));
 	}
-	if (compHomeGrid.checkDestSunk()) {
+	if (compHomeGrid.isDestroyerSunk()) {
 	    displayTextbox.setText(displayTextbox.getText()
 		    + ("You Have sunk the Agent's Destroyer"));
 	}
-	if (compHomeGrid.checkSubSunk()) {
+	if (compHomeGrid.isSubmarineSunk()) {
 	    displayTextbox.setText(displayTextbox.getText()
 		    + ("You Have sunk the Agent's Submarine"));
 	}
-	if (compHomeGrid.checkMineSunk()) {
+	if (compHomeGrid.isMineShipSunk()) {
 	    displayTextbox.setText(displayTextbox.getText()
 		    + ("You Have sunk the Agent's Minesweeper"));
 	}
@@ -95,34 +95,34 @@ public class GameState {
     }
 
     public void setShipSunkStates() {
-	if (playerHomeGrid.checkAirSunk()) {
+	if (playerHomeGrid.isAircraftcarrierSunk()) {
 	    playerAircraftCarrierSunk = true;
 	}
-	if (playerHomeGrid.checkBattleSunk()) {
+	if (playerHomeGrid.isBattleShipSunk()) {
 	    playerBattleSunk = true;
 	}
-	if (playerHomeGrid.checkDestSunk()) {
+	if (playerHomeGrid.isDestroyerSunk()) {
 	    playerDestSunk = true;
 	}
-	if (playerHomeGrid.checkSubSunk()) {
+	if (playerHomeGrid.isSubmarineSunk()) {
 	    playerSubSunk = true;
 	}
-	if (playerHomeGrid.checkMineSunk()) {
+	if (playerHomeGrid.isMineShipSunk()) {
 	    playerMineSunk = true;
 	}
-	if (compHomeGrid.checkAirSunk()) {
+	if (compHomeGrid.isAircraftcarrierSunk()) {
 	    setAgentAirSunk(true);
 	}
-	if (compHomeGrid.checkBattleSunk()) {
+	if (compHomeGrid.isBattleShipSunk()) {
 	    setAgentBattleSunk(true);
 	}
-	if (compHomeGrid.checkDestSunk()) {
+	if (compHomeGrid.isDestroyerSunk()) {
 	    agentDestSunk = true;
 	}
-	if (compHomeGrid.checkSubSunk()) {
+	if (compHomeGrid.isSubmarineSunk()) {
 	    agentSubSunk = true;
 	}
-	if (compHomeGrid.checkMineSunk()) {
+	if (compHomeGrid.isMineShipSunk()) {
 	    agentMineSunk = true;
 	}
 
@@ -168,7 +168,7 @@ public class GameState {
 	    } else if (!hit) {
 		MissIcon.paint(attackPanelGraphics, (j * 20), (i * 20));
 		compHomeGrid.update(i, j, 1);
-		playerAtt.set(i, j, 1);
+		playerAtt.setShip(i, j, 1);
 		out = "Miss!" + playerTurn;
 		outText.setText("Miss. Agent's Turn");
 		startAgentTurn();
@@ -269,14 +269,14 @@ public class GameState {
 	if (!playerShipsdeployed) {
 	    if (!playerHomeGrid.checkAirPlaced())
 		playerHomeGrid.addAir(i, j, orientation);
-	    if (!playerHomeGrid.checkBattlePlaced())
-		playerHomeGrid.addBattle(i, j, orientation);
-	    if (!playerHomeGrid.checkDestPlaced())
-		playerHomeGrid.addDest(i, j, orientation);
-	    if (!playerHomeGrid.checkSubPlaced())
+	    if (!playerHomeGrid.isBattleShipPlaced())
+		playerHomeGrid.addBattleship(i, j, orientation);
+	    if (!playerHomeGrid.isDestroyerPlaced())
+		playerHomeGrid.addDestroyer(i, j, orientation);
+	    if (!playerHomeGrid.isSubmarinePlaced())
 		playerHomeGrid.addSub(i, j, orientation);
-	    if (!playerHomeGrid.checkMinePlaced())
-		playerHomeGrid.addMine(i, j, orientation);
+	    if (!playerHomeGrid.isMineShipPlaced())
+		playerHomeGrid.addMineship(i, j, orientation);
 	}
     }
 

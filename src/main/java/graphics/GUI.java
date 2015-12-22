@@ -286,7 +286,7 @@ public class GUI extends JFrame {
 		if (valid) {
 		    AircraftCarrierH.paint(hp, (j * 20), (i * 20));
 		    out = out + data.gameState.playerHomeGrid.toString();
-		    data.gameState.playerHomeGrid.setAirPlaced(true);
+		    data.gameState.playerHomeGrid.setAirPlaced();
 		    getOutText().setText("Air Placed");
 		} else {
 		    getOutText().setText("Aircraft Carrier Will Not Fit Here");
@@ -302,7 +302,7 @@ public class GUI extends JFrame {
 		    Graphics hp = data.homePanel.getGraphics();
 		    AircraftCarrier.paint(hp, (j * 20), (i * 20));
 		    out = out + data.gameState.playerHomeGrid.toString();
-		    data.gameState.playerHomeGrid.setAirPlacedTrue();
+		    data.gameState.playerHomeGrid.setAirPlaced();
 		    getOutText().setText("Air Placed");
 		} else {
 		    out = "not valid";
@@ -319,7 +319,7 @@ public class GUI extends JFrame {
 	if (data.gameState.playerHomeGrid.isAirPlaced() && !data.battlePlaced) {
 	    if (isShipRotatedHorizonally()) {
 		boolean valid;
-		valid = data.gameState.playerHomeGrid.addBattle(i, j, 0);
+		valid = data.gameState.playerHomeGrid.addBattleship(i, j, 0);
 		Graphics hp = data.homePanel.getGraphics();
 
 		if (valid) {
@@ -334,7 +334,7 @@ public class GUI extends JFrame {
 		}
 	    } else {
 		boolean valid;
-		valid = data.gameState.playerHomeGrid.addBattle(i, j, 1);
+		valid = data.gameState.playerHomeGrid.addBattleship(i, j, 1);
 		if (valid) {
 		    Graphics hp = data.homePanel.getGraphics();
 		    Battleship.paint(hp, (j * 20), (i * 20));
@@ -357,7 +357,7 @@ public class GUI extends JFrame {
 		&& !data.destPlaced) {
 	    if (isShipRotatedHorizonally()) {
 		boolean valid;
-		valid = data.gameState.playerHomeGrid.addDest(i, j, 0);
+		valid = data.gameState.playerHomeGrid.addDestroyer(i, j, 0);
 		Graphics hp = data.homePanel.getGraphics();
 
 		if (valid) {
@@ -372,7 +372,7 @@ public class GUI extends JFrame {
 		}
 	    } else {
 		boolean valid;
-		valid = data.gameState.playerHomeGrid.addDest(i, j, 1);
+		valid = data.gameState.playerHomeGrid.addDestroyer(i, j, 1);
 		if (valid) {
 		    Graphics hp = data.homePanel.getGraphics();
 		    Destroyer.paint(hp, (j * 20), (i * 20));
@@ -432,7 +432,7 @@ public class GUI extends JFrame {
 		&& data.destPlaced && data.subPlaced && !data.minePlaced) {
 	    if (isShipRotatedHorizonally()) {
 		boolean valid;
-		valid = data.gameState.playerHomeGrid.addMine(i, j, 0);
+		valid = data.gameState.playerHomeGrid.addMineship(i, j, 0);
 		Graphics hp = data.homePanel.getGraphics();
 
 		if (valid) {
@@ -447,7 +447,7 @@ public class GUI extends JFrame {
 		}
 	    } else {
 		boolean valid;
-		valid = data.gameState.playerHomeGrid.addMine(i, j, 1);
+		valid = data.gameState.playerHomeGrid.addMineship(i, j, 1);
 		if (valid) {
 		    Graphics hp = data.homePanel.getGraphics();
 		    Minesweeper.paint(hp, (j * 20), (i * 20));
